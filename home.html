@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savory</title>
+  <link rel="shortcut icon" href="Assets/logo.png" type="image/x-icon">
+  <!-- email js -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      // https://dashboard.emailjs.com/admin/account
+      emailjs.init({
+        publicKey: "2GdE-tQGlHbgrq63L",
+      });
+    })();
+
+    window.onload = function () {
+      document.getElementById('Reservation-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Use the form reference or the form ID as a selector
+        emailjs.sendForm('service_mr5la8h', 'template_5g89ywa', this)
+          .then(() => {
+            console.log('SUCCESS!');
+          }, (error) => {
+            console.log('FAILED...', error);
+          });
+      });
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="CSS/style.css" />
+</head>
+
+<body id="#">
+
+  <nav class="navbar navbar-expand-lg py-4">
+    <div class="container">
+
+      <a class="navbar-brand fs-1" href="home.html"><i class="fas fa-utensils"></i> Savory</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+
+          <li class="nav-item dropdown ">
+            <a id="navMenu" class="nav-link active dropdown-toggle text-white" href="#" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Menus
+            </a>
+            <ul class="dropdown-menu">
+              <li><a id="navMenu1" class="dropdown-item " href="egyptmenu.html">Egyptian Menu</a></li>
+              <li><a id="navMenu2" class="dropdown-item " href="italianmenu.html">Italian Menu</a></li>
+              <li>
+                <hr class="dropdown-divider ">
+              </li>
+              <li><a id="navMenu3" class="dropdown-item " href="japanese.html">Japanese Menu</a></li>
+              <li><a id="navMenu4" class="dropdown-item " href="mexico.html">Mexico Menu</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a id="navRecipes" class="nav-link " aria-current="page" href="recipes.html">Recipes</a>
+          </li>
+          <li class="nav-item">
+            <a id="navContact" class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a id="navAbout" class="nav-link" href="about.html">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a id="navServices" class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item">
+            <a id="navAboutStuff" class="nav-link" href="stuff.html">Stuff</a>
+          </li>
+        </ul>
+
+        <div class="icons d-flex justify-content-between align-items-center gap-3">
+
+
+          <a class="p-0" href="https://wa.me/201552924534" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <i class="fas fa-solid fa-bag-shopping cartIcon"></i>
+          <div class="btn-group">
+            <button type="button" class="btn " onclick="toggleTheme()">
+              <i id="theme-icon" class="fas fa-sun"></i>
+            </button>
+          </div>
+          <div class="btn-group">
+            <button type="button" class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <i id="lang-icon" class="fas fa-globe"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-lg-end">
+              <li>
+                <a class="dropdown-item" href="#" onclick="setLanguage('en')">En</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#" onclick="setLanguage('ar')">Ar</i></a>
+              </li>
+            </ul>
+          </div>
+
+          <a href="profile.html"> <img width="40px" height="40px" class="profile rounded-circle bg-white"
+              src="Assets/image-avatar.png" alt=""></a>
+
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="myCart " style="display: none;">
+    <h4>Cart <a href="order.html" class="text-danger"><i class="fa-solid fa-reply-all fa-flip"></i></a></h4>
+
+    <div class="content d-flex flex-column gap-2">
+
+    </div>
+  </div>
+
+
+  <!------------------------ Landing ------------------------>
+  <section class="home" id="home">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between gap-5  gap-lg-5 ">
+
+        <div class="col col-12 col-lg-6">
+          <div class="content text-center text-lg-start">
+            <h3 id="homeTitle1">Your Ultimate</h3>
+            <h3 id="homeTitle2"><span id="homeTitle2" style="font-size: 6rem; color: #aea91d;">food </span> Destination</h3>
+            <p id="homeParagraph">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
+              nam quia magni.
+            </p>
+            <div class="d-flex align-items-center justify-content-center justify-content-lg-start mt-5">
+              <a id="homeButton1" href="" class="btn">Buy Now</a>
+              <div class="d-flex justify-content-center align-items-center">
+                <i class="fa-solid fa-play"></i>
+                <span id="homeButton2"  class="How ms-2">How to Order</span>
+              </div>
+            </div>
+
+
+            <div class="twestatic d-flex align-items-center justify-content-center justify-content-lg-start ms-0">
+              <div class="statistic ">
+                <strong style="font-size: 4rem">20K+</strong>
+                <div id="homeP1" style="font-size: 1rem; color: #7c7676">Happy Customers</div>
+              </div>
+              <div class="">
+                <div style="border-left: 1px solid #707473; height: 100%"></div>
+              </div>
+              <div class="statistic">
+                <strong style="font-size: 4rem">700+</strong>
+                <div id="homeP2" style="font-size: 1rem; color: #7c7676;">Types of Food</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col col-12 col-lg-5">
+          <div class="rt-imege">
+            <div class="image">
+              <img src="Assets/landing.png" alt="" srcset="" height="350px" width="350px" style="border-radius: 50%" />
+              <div class="rt-icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section> 
+    <!------------------------ Featured Recipes ------------------------>
+
+  <div class="featureresioes">
+
+    <div class="container mt-5 container1">
+      <div class="swiper row">
+        <div class="header-container">
+          <h2 id="popularH2" class="title"><span id="popularH2" class="fontfeatured">Popular</span> Categories</h2>
+          <div class="icon-buttons">
+            <div class="swiper-button-prevv">
+              <i class="fa-solid fa-circle-chevron-left fa-xl"></i>
+            </div>
+            <div class="swiper-button-nextt">
+              <i class="fa-solid fa-circle-chevron-right fa-xl"></i>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-wrapper mt-5 ">
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class=" card-cat ">
+              <a href=""><img src="./Assets/Drink&Burger.png" class="" alt="Product Image 1"></a>
+              </button>
+              <div class="card-body">
+                <p id="popularSlide1" class="card-text">Drink & Burger</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class=" card-cat">
+              <a href=""><img src="./Assets/ice-cream.png" class="card-img-top" alt="Product Image 1"></a>
+              </button>
+              <div class="card-body">
+                <p id="popularSlide2" class="card-text">ice-cream</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class=" card-cat">
+              <a href=""><img src="./Assets/Rice.png" class="card-img-top" alt="Product Image 1"></a>
+              </button>
+              <div class="card-body">
+                <p id="popularSlide3" class="card-text">Rice</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class=" card-cat">
+              <a href=""><img src="./Assets/soup.png" class="card-img-top" alt="Product Image 1"></a>
+              </button>
+              <div class="card-body">
+                <p id="popularSlide4" class="card-text">Soup</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide col-md-6 col-lg-4   md-5">
+            <div class=" card-cat">
+              <a href=""><img src="./Assets/Drink&Burger.png" class="card-img-top" alt="Product Image 1"></a>
+              </button>
+              <div class="card-body">
+                <p id="popularSlide5" class="card-text">Drink & Burger</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row cat-photo container-fluid  justify-content-between ">
+       
+        <div class="col col-12 col-md-4 ">
+          <img class="w-100" src="./Assets/30-min.png" alt="Free Delivery">
+        </div>    
+
+        <div class="col col-12 col-md-4 ">
+        <img class="w-100" src="./Assets/food-qual.png" alt="30-minute delivery guarantee">
+        </div>
+               
+        <div class="col col-12 col-md-4 ">
+          <img class="w-100" src="./Assets/free-del.png" alt="Quality Food">
+        </div>
+  
+      </div>
+
+    </div>
+
+    <div class="container mt-5 container2">
+      <div class="swiper row">
+
+        <div class="header-container">
+
+          <h2 id="recipesH2" class="title"><span class="fontfeatured">Featured</span> Recipes</h2>
+
+          <div class="icon-buttons">
+            <div class="swiper-button-prevv">
+              <i class="fa-solid fa-circle-chevron-left fa-xl"></i>
+            </div>
+            <div class="swiper-button-nextt">
+              <i class="fa-solid fa-circle-chevron-right fa-xl"></i>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="swiper-wrapper">
+
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class="card">
+              <img src="Assets/r1.jpg" class="card-img-top" alt="Product Image 1" style="border-radius: 10px;">
+
+              <div id="recipesNew1" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action" onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl " data-id='100'></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard1" class="card-text">Classic Margherita Pizza</p>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class="card">
+              <img src="Assets/r2.jpg" class="card-img-top" alt="Product Image 1" style="border-radius: 10px;">
+
+              <div id="recipesNew2" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action" onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl " data-id="101"></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard2" class="card-text">Classic Margherita Pizza</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class="card">
+
+              <img src="Assets/r3.jpg" class="card-img-top" alt="Product Image 1"
+                style="border-radius: 10px;height: 22rem;">
+
+              <div id="recipesNew3" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action" onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl " data-id="102"></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard3" class="card-text">Classic Margherita Pizza</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class="card">
+
+              <img src="Assets/r4.jpg" class="card-img-top" alt="Product Image 1" style="border-radius: 10px;">
+
+              <div id="recipesNew4" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action " onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl " data-id="103"></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard4" class="card-text">Classic Margherita Pizza</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="swiper-slide col-md-6 col-lg-4 md-5">
+            <div class="card">
+
+              <img src="Assets/r5.jpg" class="card-img-top" alt="Product Image 1"
+                style="border-radius: 10px;height: 22rem;">
+
+              <div id="recipesNew5" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action" onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl " data-id="104"></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard5" class="card-text">Classic Margherita Pizza</p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="swiper-slide col-md-6 col-lg-4   md-5">
+            <div class="card">
+
+              <img src="Assets/r6.jpg" class="card-img-top" alt="Product Image 1" style="border-radius: 10px;">
+
+              <div id="recipesNew6" class="showcase-badge angle"> New</div>
+
+              <button class="btn-action" onclick="toggleHeart(this)">
+                <i class="fa-solid fa-heart fa-xl" data-id="105"></i>
+              </button>
+
+              <div class="card-body">
+                <p id="recipesCard6" class="card-text"> Classic Margherita Pizza</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row g-3">
+
+        <div class="col-md-6">
+
+          <div class="card m-4">
+            <div class="card-bodyy position-relative overflow-hidden">
+              <img src="Assets/r6.jpg" class="card-img-top" alt="Product Image 1"
+                style="border-radius: 10px; opacity: 0.8;">
+              <div id="recipesBigCard1" class="showcase-badge angle"> 15% OFF</div>
+
+              <div
+                class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center p-4">
+                <h2 id="recipesBigCard2" class="headtex">Great offer for today</h2>
+                <h2 id="recipesBigCard3" class="desk">Enjoy a 15% Discount on every</h2>
+                <h2 id="recipesBigCard4" class="desk">order of Hakka Noodles</h2>
+                <h2 id="recipesBigCard5" class="headtex">Don't Miss Today.</h2>
+                <button id="recipesBigCard6" class="btn btn-success ordernow mt-4">Order Now</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card m-4">
+            <div class="card-bodyy position-relative overflow-hidden ">
+
+              <img src="Assets/r2.jpg" class="card-img-top" alt="Product Image 1"
+                style="border-radius: 10px; opacity: 0.8;">
+
+              <div id="recipesBigCard7" class="showcase-badge angle"> 15% OFF</div>
+
+              <div
+                class="card-img-overlay d-flex flex-column justify-content-center align-items-center text-center p-4">
+                <h2 id="recipesBigCard8" class="headtex">Great offer for today</h2>
+                <h2 id="recipesBigCard9" class="desk">Enjoy a 15% Discount on every</h2>
+                <h2 id="recipesBigCard10" class="desk">order of Hakka Noodles</h2>
+                <h2 id="recipesBigCard11" class="headtex">Don't Miss Today.</h2>
+                <button id="recipesBigCard12" class="btn btn-success ordernow mt-4">Order Now</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    <!------------------------ Explore Menus ------------------------>
+
+    <section class="exploreMenus container min-vh-100">
+
+      <div class=" header d-flex justify-content-between">
+        <h3 id="menuP" class="py-5 fw-bold fst-italic fs-1">Explore Our Menus</h3>
+        <div class="btn-group d-flex justify-content-between">
+          <button id="previousElement" type="button" class=" btn1 rounded-circle btn mt-4 me-4">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button id="nextElement" type="button" class="btn2  top-0  rounded-circle btn btn-success mt-4">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+  
+      <div class="row">
+  
+        <div class=" col-sm-12 col-md-12 col-lg-12 col-xl-4 fs-4 cardscolor">
+          <div class="card p-3">
+            <div class="card-body">
+              <h2 id="menuP1" class="card-title font">Italian menu</h2>
+              <p id="menuP2" class="card-text">
+                Some quick example text to build on the card title 
+                
+              </p>
+            </div>
+          </div>
+  
+          <div class="card mt-4 p-3">
+            <div class="card-body">
+              <h2 id="menuP3" class="card-title font">Mediterranean menu</h2>
+              <p id="menuP4" class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content 34t34t34t43t3t34t.
+              </p>
+            </div>
+          </div>
+  
+          <div class="card mt-4 p-3">
+            <div class="card-body">
+              <h2 id="menuP5" class="card-title font">Asian menu</h2>
+              <p id="menuP6" class="card-text">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content reg3rg4g54g.
+              </p>
+            </div>
+          </div>
+        </div>
+  
+        <div class="position-relative col-md-12 col-lg-12 col-xl-8 imagesSlider">
+  
+          <div class="item images image1 card position-absolute">
+            <img src="./Assets/meal-1.jpg" class="card-img-top" alt="..." height="432px" />
+            <div class="bg card-body position-absolute bottom-0">
+              <h2 id="menuP7" class="card-title">Italian Menu</h2>
+              <p id="menuP8" class="card-text card0 cardText">Some quick example text to build on the card title and make up the bulk
+                of the card's content</p>
+            </div>
+          </div>
+  
+          <div class="item images image2 card position-absolute">
+            <img src="./Assets/meal-2.jpg" class="card-img-top" alt="..." height="432px" />
+            <div class="bg card-body position-absolute bottom-0">
+              <h2 id="menuP9" class="card-title">Chinese Menu</h2>
+              <p id="menuP10" class="card-text card1 cardText"> Some quick example text to build on the card title and make up
+                the bulk of the card's content</p>
+            </div>
+          </div>
+  
+          <div class="item images image3 card position-absolute">
+            <img src="./Assets/meal-3.jpg" class="card-img-top" alt="..." height="432px" />
+            <div class="bg card-body position-absolute bottom-0">
+              <h2 id="menuP11" class="card-title">Korean menu</h2>
+              <p id="menuP12" class="card-text card2 cardText">Some quick example text to build on the card title and make up the bulk
+                of the card's content</p>
+            </div>
+          </div>
+  
+          <div class="item images image4 card position-absolute">
+            <img src="./Assets/meal-4.jpg" class="card-img-top" alt="..." height="432px" />
+            <div class="bg card-body position-absolute bottom-0">
+              <h2 id="menuP13" class="card-title">Syrian Menu</h2>
+              <p id="menuP14" class="card-text card3 cardText">Some quick example text to build on the card title and make up the bulk
+                of the card's content</p>
+            </div>
+          </div>
+  
+          <div class="item images image5 card position-absolute">
+            <img src="./Assets/meal-0.jpg" class="card-img-top" alt="..." height="432px" />
+            <div class=" bg card-body position-absolute bottom-0">
+              <h2 id="menuP15" class="card-title">Egyptian Menu</h2>
+              <p id="menuP16" class="card-text cardText card4">Some quick example text to build on the card title and make up the bulk
+                of the card's content </p>
+            </div>
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </section>
+  
+    <!------------------------  Reservation ------------------------>
+    <div class="container">
+      <div class="reservation-section col-12">
+  
+        <div class="reservation-image d-none d-md-block">
+          <img src="Assets/reservation-img.png" alt="">
+        </div>
+  
+        <div class="reservation-form" id="reservation-form">
+  
+          <h2 id="reservH2"><span style="color: #bb9120;">Seamless</span> Reservations for Unforgettable Dining Moments</h2>
+          
+          <form id="Reservation-form">
+            
+            <div class="form-row">
+  
+              <div class="form-group ">
+                <label id="reservla1" for="name">Your Name*</label>
+                <input type="text" class="userName form-control" id="reservIn2" name="name" placeholder="Your Full Name"
+                  required>
+              </div>
+  
+              <div class="form-group ">
+                <label id="reservla3" for="email">Your Email*</label>
+                <input  type="email" class="form-control" id="reservIn4" name="email" placeholder="Your Email" required>
+              </div>
+            </div>
+  
+            <div class="form-row">
+              
+              <div class="form-group ">
+                <label id="reservla5" for="phone">Phone Number*</label>
+                <input type="tel" class="phone form-control" id="phone" name="phone" placeholder="+1" required>
+              </div>
+  
+              <div class="form-group ">
+                <label id="reservla6" for="date">Reservation Date*</label>
+                <input type="date" class="Reservation-Date form-control" id="date" name="date" required>
+              </div>
+            </div>
+  
+            <div class="form-row">
+              
+              <div class="form-group ">
+                <label id="reservla7" for="time">Reservation Time*</label>
+                <input type="time" class="Reservation-Time form-control" id="time" name="time" required>
+              </div>
+  
+              <div class="form-group ">
+                <label id="reservIn8" for="person">Person*</label>
+                <input type="number" class="form-control" id="person" name="person" placeholder="04" required max="10">
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <label id="reservIn9" for="notes">Notes*</label>
+              <textarea class="notes form-control" id="notes" name="notes" rows="3"></textarea>
+            </div>
+  
+            <button id="submit" type="submit" class="btn btn-block">Request Reservation</button>
+          
+          </form>
+        </div>
+      </div>
+    </div>
+    <!------------------------  Review  ------------------------------->
+
+  <div class="container">
+    <div class="review-section">
+      
+      <div class="row align-items-center justify-content-between">
+        <div class="col col-12 col-md-4">
+          <div class="review-image text-center"><img width="300" height="300" src="./Assets/review-img.png" alt=""></div>
+
+        </div>
+        <div class="col col-12 col-md-8">
+          <div class="review-content">
+            <h2 id="reviewH2">Reviews about our test</h2>
+            <p id="reviewP">Hear what our customers have to say about the incredible flavors in every bite! From savory to sweet, our
+              dishes continue to impress and satisfy, earning rave reviews for their delicious taste and quality.</p>
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+            
+            <div class="reviewer">
+              <img src="./Assets/image-avatar.png" alt="Reviewer">
+              
+              <div>
+                <div class="name">Mohamed Afefy</div>
+                <div class="title">Front-End Developer</div>
+              </div>
+    
+            </div>
+    
+          </div>
+        </div>
+      </div>
+      
+
+
+    </div>
+  </div>
+
+  <!------------------------  Services  ------------------------------->
+  <div class="container features">
+    <div class="row">
+
+      <div class="col-md-4 feature-box">
+        <h1><i class="fa-solid fa-ranking-star"></i> </h1>
+        <h3 id="serviceH1">Quality Food</h3>
+        <p id="serviceP1">Savor the best, freshest ingredients in every bite, as we take pride in offering only premium quality food to
+          fulfill your cravings!</p>
+      </div>
+
+      <div class="col-md-4 feature-box">
+        <h1> <i class="fa-regular fa-face-kiss-beam"></i></h1>
+        <h3 id="serviceH2">Super Taste</h3>
+        <p id="serviceP2">Indulge in our dishes packed with bold flavors and a super taste that will leave your taste buds craving
+          more!</p>
+      </div>
+
+      <div class="col-md-4 feature-box">
+        <h1><i class="fa-solid fa-truck-fast"></i></h1>
+        <h3 id="serviceH3">Fast Delivery</h3>
+        <p id="serviceP3">Experience lightning-fast delivery, bringing your favorite meals hot and fresh right to your doorstep in no
+          time!</p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="row col-12 serv-photo container-fluid">
+      
+          <img class=" col-3 col-md-3   " src="./Assets/serv-photo1.png" alt="Free Delivery">
+          <img class=" col-3 col-md-3   " src="./Assets/serv-photo2.png" alt="30-minute delivery guarantee">
+          <img class=" col-3 col-md-3   " src="./Assets/serv-photo3.png" alt="Quality Food">
+          <img class=" col-3 col-md-3   " src="./Assets/serv-photo4.png" alt="Quality Food">
+      
+  </div>
+  <!------------------------  Footer  ------------------------------->
+  <div class="footer ">
+    <div class="container">
+      <div class="row align-items-center g-3 g-md-0">
+
+        <div class="col-md-3 d-flex flex-column gap-3">
+          <img class="logo " src="./Assets/footer-logo.png" alt="">
+          <p id="footerP">We deliver fresh, sustainable ingredients from local farms, making it easy for you to enjoy delicious,
+            wholesome meals every day.</p>
+          <div class="social-icons2">
+            <a href=""><i class="fa-brands fa-facebook"></i></a>
+            <a href=""><i class="fa-brands fa-pinterest"></i></a>
+            <a href=""><i class="fa-brands fa-x-twitter"></i></a>
+            <a href=""><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="col-md-2 links d-flex flex-column gap-3">
+          <h4 id="footerH4">Our Links</h4>
+          <a id="footerlink1" href="#home">Home</a>
+          <a id="footerlink2" href="#about">About Us</a>
+          <a id="footerlink3" href="#menu">Our Menu</a>
+        </div>
+
+        <div class="Contact col-md-3 contact-info d-flex flex-column gap-3">
+          <h4 id="footerContact" >Contact Us</h4>
+          <p><a href="tel:+15558358705"><i class="fa-solid fa-phone-volume"></i> +1 555 8358705</a></p>
+          <p><a href="mailto:kenzi.lawson@example.com"><i class="fa-regular fa-envelope"></i> kenzi.lawson@example.com</a></p>
+          <p ><i class="fa-solid fa-location-dot"></i> 2642 Royal Ln. Mesa, New Jersey 64563</p>
+        </div>
+
+        <div class="col-md-4 subscribe d-flex flex-column gap-3">
+          <h4 id="footerSub">Subscribe</h4>
+          <form>
+            <input type="email" placeholder="Email Address">
+            <button id="button1" type="submit">send</button>
+          </form>
+          <p id="footerTime"> Saturday - Sunday \ 7:00AM - 2:00PM</p>
+        </div>
+
+        <br class="linee">
+
+        <div id="footerCopyRighy" class=" col-12 copyright ">
+          &copy; 2024 craetive team project Limited. All Rights Reserved.
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+    <script src="./JS/translation.JS"></script>
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="JS/main.js"></script>
+
+    <script>
+      const swiper = new Swiper('.swiper', {
+        slidesPerView: 1, // Adjust number of cards visible
+        spaceBetween: 30, // Space between slides
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-nextt',
+          prevEl: '.swiper-button-prevv',
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 10,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        },
+      });
+      //* ///////////////////////////////////////////////// Explore Menus
+
+      let myImgs = Array.from(document.querySelectorAll(".item img"));
+      let nextElement = document.querySelector("#nextElement");
+      let previousElement = document.querySelector("#previousElement");
+      let cardTitle = document.querySelectorAll(".imagesSlider h2");
+      let cardText = document.querySelectorAll(".cardText");
+
+      let arr = [4, 3, 2, 1, 0];
+      let card4 = document.querySelector(".card4").innerHTML;
+      let card3 = document.querySelector(".card3").innerHTML;
+      let card2 = document.querySelector(".card2").innerHTML;
+      let card1 = document.querySelector(".card1").innerHTML;
+      let card0 = document.querySelector(".card0").innerHTML;
+
+      nextElement.addEventListener("click", showNextElement);
+      previousElement.addEventListener("click", showPreviousElement);
+
+      // 4 3 2 1 0  cards in html
+      // 2 1 0 4 3  imgs
+      let paragraphs = [`${card4}`, `${card3}`, `${card2}`, `${card1}`, `${card0}`];
+      let h4 = ["Italian Menu", "Chinese Menu", "Korean menu", "Syrian Menu", "Egyptian Menu"];
+
+      function showNextElement() {
+        arr.push(arr.shift());
+        paragraphs.push(paragraphs.shift());
+        h4.unshift(h4.pop());
+
+        for (let index = 4; index >= 0; index--) {
+          myImgs[arr[index]].setAttribute("src", `./Assets/meal-${index}.jpg`);
+          cardText[index].innerHTML = paragraphs[index];
+          cardTitle[index].innerHTML = h4[index];
+        }
+      }
+
+      // 4 3 2 1 0  cards in html
+      //  3 2 1 0 4 right
+      //  left
+
+      function showPreviousElement() {
+        arr.unshift(arr.pop());
+        paragraphs.unshift(paragraphs.pop());
+        h4.unshift(h4.pop());
+
+        for (let index = 4; index >= 0; index--) {
+          myImgs[arr[index]].setAttribute("src", `./Assets/meal-${index}.jpg`);
+          cardText[index].innerHTML = paragraphs[index];
+          cardTitle[index].innerHTML = h4[index];
+        }
+      }
+
+    </script>
+
+</body>
+
+</html>
