@@ -61,6 +61,9 @@
           <li class="nav-item">
             <a id="navAboutStuff" class="nav-link" href="stuff.html">Stuff</a>
           </li>
+           <li class="nav-item">
+            <a id="reviews" class="nav-link" href="reviews.html">Reviews</a>
+        </li>
         </ul>
         
         <div class="icons d-flex justify-content-between align-items-center gap-3">
@@ -106,11 +109,12 @@
 <div class="user-card">
   <h2>Account</h2>
   
-  <button class="test-btn"><a href="history.html" target="_blank">orders history</a> </button>
-
     <div class="d-flex align-items-center mb-5 ">
 
-      <img width="120px" height="120px" class="profile "  src="Assets/image-avatar.png" alt="User Picture" class="user-image me-5" id="userImage">
+      <!-- <img width="120px" height="120px" class="profile "  src="Assets/image-avatar.png" alt="User Picture" class="user-image me-5" id="userImage"> -->
+     
+      <div id="userImageContainer"></div>
+
       <div class="d-flex flex-column ">
         <button class="btn btn-action changpic ms-3" id="changePicBtn"><i class="fa-solid fa-user-pen"></i></button>
         <button class="btn btn-action delpic  ms-3" id="deletePicBtn"><i class="fa-solid fa-user-xmark"></i></button>
@@ -119,7 +123,10 @@
 
     </div>
 
+  <button class="test-btn"><a href="history.html" target="_blank">orders history</a> </button>
   <form id="userForm">
+
+
     <div class="row">
       <!-- Left Column -->
       <div class="col-md-6">
@@ -153,18 +160,9 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="profilePassword" class="form-label">Password</label>
-          <input type="text" name="password" class="form-control" id="profilePassword" style="border-radius: 20px;" placeholder="Enter password">
+          <label for="role" class="form-label">Role</label>
+          <input type="text"  name="role" class="form-control" disabled id="role" style="border-radius: 20px;" placeholder="Enter phone number">
           <div class="">
-          </div>
-        </div>
-        <div class="mb-3">
-          <label for="accountType" class="form-label">Account Type</label>
-          <select class="form-control" id="accountType" name="accountType" style="border-radius: 20px;">
-            <option value="Basic">Basic</option>
-            <option value="Premium">Premium</option>
-            <option value="Admin">Admin</option>
-          </select>
         </div>        
       </div>
     </div>

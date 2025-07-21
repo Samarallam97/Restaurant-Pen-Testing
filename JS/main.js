@@ -1,12 +1,26 @@
+function parseJwt(token) {
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch (e) {
+    return null;
+  }
+}
+
+if (localStorage.getItem("token"))
+{
+const currentUser = parseJwt(localStorage.getItem("token"));
+
+console.log(currentUser);
+
+
 let profilePic = document.getElementsByClassName("profile")
 
-for (let i = 0; i < profilePic.length; i++) {
-  if (localStorage.getItem("userImg")) {
-    
-    profilePic[i].src = localStorage.getItem("userImg")
-  }
-  
+if(currentUser.profilePictureUrl.length > 0){
+  profilePic[0].src = currentUser.profilePictureUrl;
 }
+}
+
+
 // //* ////////////////////////////////////////////// register & login
 
 let registerForm = document.getElementById("registerForm");
@@ -119,7 +133,7 @@ if (Cpassword != null) {
 // //* ////////////////////////////////////////////////////////////////////////
 
 if (registerForm != null) {
-  registerForm.onsubmit = (event) => {
+  registerForm.onsubmit = async (event) => {
     event.preventDefault();
 
     if (
@@ -150,11 +164,15 @@ if (registerForm != null) {
       ) &&
       AreIdentical()
     ) {
-      ShowToast();
-      SaveUserDataToLocalStorage();
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 2000);
+      const success = await SaveUserInDatabase();
+
+      if (success) {
+        ShowToast();
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 2000);
+      }
+     
     }
   };
 }
@@ -218,71 +236,113 @@ function ShowToast() {
   toastBootstrap.show();
 }
 
-function SaveUserDataToLocalStorage() {
-  let formData = new FormData(registerForm);
-  let user = {};
+async function SaveUserInDatabase() {
+  const formData = new FormData(registerForm);
+  const user = {};
+
   formData.forEach((value, key) => {
     user[key] = value;
   });
 
+  user.Role = "User";
+
   console.log(user);
-  
-  user.accountType = "Basic";
 
-  users.push(user);
+  try {
+    const response = await fetch("https://localhost:7067/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    });
 
-  localStorage.setItem("users", JSON.stringify(users));
+    const result = await response.json();
+
+    if (response.ok && result.isAuthenticated) {
+      console.log("AccessToken:", result.accessToken);
+      console.log("Token expires at:", result.accessTokenExpiration);
+
+      localStorage.setItem("accessToken", result.accessToken);
+      localStorage.setItem("expires", result.accessTokenExpiration);
+
+
+      return true;
+
+    } else {
+      const errorMessage = result || "Unknown error occurred during registration.";
+      alert("Registration failed: " + errorMessage);
+
+      return false;
+    }
+  } catch (error) {
+    console.error(" Network or server error:", error);
+    alert("An unexpected error occurred while registering. Error: " + error.message);
+
+    return false;
+  }
 }
+
+
 //* ////////////////////////////////////////////////////////////////////////
 
 if (loginForm != null) {
-  loginForm.onsubmit = (event) => {
+  loginForm.onsubmit = async (event) => {
     event.preventDefault();
-    let result = IsValidToLogin();
-    console.log(result.isValid);
-    console.log(result.user);
-    if (result.isValid) {
-      localStorage.setItem("currentUser", JSON.stringify(result.user));
-      rememberYou();
+
+    const formData = new FormData(loginForm);
+    const loginData = {};
+
+    formData.forEach((value, key) => {
+      loginData[key] = value;
+    });
+
+    console.log(loginData);
+    
+    try {
+      const response = await fetch("https://localhost:7067/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(loginData)
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed. Please check your credentials.");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      localStorage.setItem("token", JSON.stringify(data.accessToken));
+      localStorage.setItem("expires", JSON.stringify(data.accessTokenExpiration));
+
+
+      // rememberYou(); 
       ShowToast();
+
       setTimeout(() => {
         window.location.href = "home.html";
       }, 2000);
+    } catch (error) {
+      alert("Login error: " + error.message);
     }
   };
 }
 
-function IsValidToLogin() {
-  let isValid = false;
-  let user;
 
-  users.some(function (element) {
-    if (element.email == email.value && element.password == password.value) {
-      isValid = true;
-      user = element;
-      loginStatus.classList.add("d-none");
-      return true;
-    } else {
-      return false;
-    }
-  });
 
-  if (!isValid) {
-    loginStatus.classList.remove("d-none");
-  }
-
-  return { isValid, user };
-}
-
-function rememberYou() {
-  if (rememberMe.checked) {
-    localStorage.setItem("email", email.value);
-    localStorage.setItem("password", password.value);
-  } else {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-  }
-}
+// function rememberYou(email , password) {
+//   if (rememberMe.checked) {
+//     localStorage.setItem("email", email);
+//     localStorage.setItem("password", password);
+//   } else {
+//     localStorage.removeItem("email");
+//     localStorage.removeItem("password");
+//   }
+// }
 
 
 
@@ -328,8 +388,10 @@ recipes.forEach((element) => {
 
 //* ////////////////////////////////////////// Profile
 
+const payload = parseJwt(localStorage.getItem("token"));
 
-let CurrentUser = JSON.parse(localStorage.getItem("currentUser"));
+let userImage = document.getElementById('userImage');
+
 let ProfileFname = document.getElementById("ProfileFname");
 let ProfileFnameMsg = document.querySelector("#ProfileFname + div");
 
@@ -341,22 +403,26 @@ let ProfileEmail = document.getElementById("ProfileEmail");
 let profilePhone = document.getElementById("profilePhone");
 let profilePhoneMsg = document.querySelector("#profilePhone + div");
 
-let profilePassword = document.getElementById("profilePassword");
-let profilePasswordMsg = document.querySelector("#profilePassword + div");
-
-let accountType = document.getElementById("accountType");
+let role = document.getElementById("role");
 
 let userForm = document.getElementById("userForm");
 
+let imageContainer = document.getElementById("userImageContainer");
 
 if (ProfileFname) {
-  ProfileFname.value = CurrentUser.fName;
-  ProfileLname.value = CurrentUser.lName;
-  ProfileEmail.value = CurrentUser.email;
-  profilePhone.value = CurrentUser.phone;
-  profilePassword.value = CurrentUser.password;
-  accountType.value = CurrentUser.accountType;
-  console.log(CurrentUser);
+
+  ProfileFname.value = payload.firstname;
+  ProfileLname.value = payload.lastname;
+  ProfileEmail.value = payload.email;
+  profilePhone.value = payload.phone;
+  role.value = payload.role;
+  // userImage.src = payload.profilePictureUrl;
+
+  fetch(payload.profilePictureUrl)
+  .then(res => res.text())
+  .then(svgText => {
+    imageContainer.innerHTML = svgText; 
+  });
 }
 
 if (ProfileFname != null) {
@@ -392,19 +458,9 @@ if (profilePhone != null) {
   };
 }
 
-if (profilePassword != null) {
-  profilePassword.oninput = () => {
-    IsValid(
-      profilePassword,
-      profilePasswordMsg,
-      passwordRegEx,
-      "The password must be at least 8 characters containg : At least one lowercase letter , one uppercase letter ,one digit"
-    );
-  };
-}
 
 if (userForm != null) {
-  userForm.onsubmit = (event) => {
+  userForm.onsubmit = async (event) => {
     event.preventDefault();
     if (
       IsValid(
@@ -424,46 +480,13 @@ if (userForm != null) {
         profilePhoneMsg,
         phoneRegex,
         "Enter an egyptian phone number"
-      ) &&
-      IsValid(
-        profilePassword,
-        profilePasswordMsg,
-        passwordRegEx,
-        "The password must be at least 8 characters containg : At least one lowercase letter , one uppercase letter ,one digit"
-      ) 
+      )
     ) {
-      ShowToast();
-      UpdateUserDataToLocalStorage();
+      UpdateUserDataToDatabase();
     }
   };
 }
 
-
-function UpdateUserDataToLocalStorage() {
-    let formData = new FormData(userForm);
-    
-    let user = {};
-    formData.forEach((value, key) => {
-      user[key] = value;
-    });
-  
-    user.email = ProfileEmail.value;
-
-    users.some(function (element) {
-      if (element.email == user.email) {
-
-        Object.keys(user).forEach(key => {
-          element[key] = user[key];
-        });
-
-        localStorage.setItem("currentUser" , JSON.stringify(user))
-
-        return true;
-      } 
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-}
 
 let cancel = document.getElementById("cancel")
 
@@ -473,10 +496,62 @@ if(cancel){
   }
 }
 
+
+function UpdateUserDataToDatabase() {
+
+  const formData = new FormData();
+
+  formData.append("email", document.getElementById("ProfileEmail").value);
+  formData.append("fName", document.getElementById("ProfileFname").value);
+  formData.append("lName", document.getElementById("ProfileLname").value);
+  formData.append("phone", document.getElementById("profilePhone").value);
+
+  const UserImage = document.getElementById("imageInput");
+  
+  if (UserImage.files.length > 0) {
+    formData.append("ProfileImage", UserImage.files[0]);
+  }
+
+  for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+    }
+
+    console.log(formData);
+    
+  
+  fetch('https://localhost:7067/api/auth/update-profile', {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + localStorage.getItem('token') 
+    },
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      return response.json().then(data => { throw new Error(data.message || "Failed to update profile"); });
+    }
+
+    return response.json();
+  })
+  .then(data => {
+    
+    localStorage.setItem("token", JSON.stringify(data.accessToken));
+    localStorage.setItem("expires", JSON.stringify(data.accessTokenExpiration));
+
+    ShowToast();
+    console.log(data);
+  })
+  .catch(error => {
+    alert("Error: " + error.message);
+    console.error("Error:", error);
+  })
+}
+
+
 let changePicBtn = document.getElementById('changePicBtn');
 let deletePicBtn = document.getElementById('deletePicBtn');
 let imageInput = document.getElementById('imageInput');
-let userImage = document.getElementById('userImage');
+
 
 
 if (changePicBtn) {
@@ -492,25 +567,22 @@ if (imageInput) {
     if (file) {
       let reader = new FileReader();
       reader.onload = function(e) {
-        userImage.src = e.target.result;
-        localStorage.setItem("userImg" ,userImage.src )
-      };
-      reader.readAsDataURL(file);
-      window.location.reload();
-
+        // userImage.src = e.target.result;
+        imageContainer.innerHTML = e.target.result;
+        reader.readAsDataURL(file);
     }
-  });
-
-  
+  }});  
 }
+
 
 if (deletePicBtn) {
 
 deletePicBtn.addEventListener('click', () => {
-  localStorage.removeItem("userImg")
+  userImage.src = "Assets/image-avatar.png"
   window.location.reload();
 });
 }
+
 
 // * ///////////////////////////////////// Orders History
 
